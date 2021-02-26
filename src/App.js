@@ -1,18 +1,35 @@
 import './App.css';
-import Contact from './components/Contact';
-import Header from './components/Header';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Contacts from './components/contacts/Contacts';
+import AddContact from './components/contacts/AddContact.js';
+import Header from './components/layout/Header';
+import About from './components/pages/About';
+import NotFound from './components/pages/NotFound';
+
+import Test from './components/test/Test';
+
+import { Provider } from './context';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
   return (
-    <div className="App">
-      <Header branding="Contact Manager" />
-      <div className="container">
-        <Contact name="Sam" email="sam@sam.com" phone="888-888-8888" />
-        <Contact name="Dani" email="dani@dani.com" phone="777-777-7777" />
-      </div>
-    </div>
+    <Provider>
+      <Router>
+        <div className="App">
+          <Header branding="Contact Manager" />
+          <div className="container">
+            <Switch>
+              <Route exact path="/" component={ Contacts } />
+              <Route exact path="/contact/add" component={ AddContact } />
+              <Route exact path="/about" component={ About } />
+              <Route exact path="/test" component={ Test } />
+              <Route component={ NotFound } />
+            </Switch>
+          </div>
+        </div>
+      </Router>
+    </Provider>
   );
 }
 
