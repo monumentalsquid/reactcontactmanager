@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Consumer } from '../../context';
+import axios from 'axios';
+
 
 
 class Contact extends Component {
@@ -15,8 +18,15 @@ class Contact extends Component {
         });
     };
 
-    onDeleteClick = (id, dispatch) => {
-        dispatch({type: 'DELETE_CONTACT', payload: id});
+    onDeleteClick = async (id, dispatch) => {
+        try {
+            await axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
+            dispatch({ type: 'DELETE_CONTACT', payload: id });
+        }
+        catch(e) {
+            dispatch({ type: 'DELETE_CONTACT', payload: id });
+        }
+        
     };
 
     render() {
@@ -32,7 +42,8 @@ class Contact extends Component {
                             <h4>
                                 { name }
                                 <i onClick={this.onShowClick} className="fas fa-sort-down" style={{ cursor: 'pointer' }} />
-                                <i onClick={this.onDeleteClick.bind(this, id, dispatch)} className="fas fa-times" style={{ cursor: 'pointer', color: 'red', float: 'right' }} />
+                                <Link to={`contact/edit/${id}`}><i className="fas fa-pencil-alt" style={{cursor: 'pointer', color: 'black', float: 'right'}}/></Link>
+                                <i onClick={this.onDeleteClick.bind(this, id, dispatch)} className="fas fa-times" style={{ cursor: 'pointer', color: 'red', float: 'right', marginRight: '1.5rem' }} />
                             </h4>
                             { showContactInfo ? (
                                 <ul className="list-group">
